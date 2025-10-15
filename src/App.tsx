@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Home as HomeIcon,
   Play as PlayIcon,
@@ -13,20 +13,27 @@ import SettingsTab from './components/SettingsTab';
 import { getSettings } from './utils/storage';
 import { AppSettings } from './types';
 
-type TabType = 'main' | 'continue' | 'content' | 'settings' | 'upsell';
+type TabType = 'main' | 'continue' | 'content' | 'settings';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('main');
   const [settings, setSettings] = useState<AppSettings>(getSettings());
   const [refreshKey, setRefreshKey] = useState(0);
+  const [path, setPath] = useState(window.location.pathname);
 
-  const handleProgressUpdate = () => {
-    setRefreshKey(prev => prev + 1);
-  };
+  useEffect(() => {
+    const onPopState = () => setPath(window.location.pathname);
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
 
-  const handleProgressReset = () => {
-    setRefreshKey(prev => prev + 1);
-  };
+  // 👇 se estiver na URL /upsell, mostra a página Upsell direto
+  if (path === '/upsell') {
+    return <UpsellPage />;
+  }
+
+  const handleProgressUpdate = () => setRefreshKey(prev => prev + 1);
+  const handleProgressReset = () => setRefreshKey(prev => prev + 1);
 
   const tabs = [
     { id: 'main' as TabType, icon: HomeIcon, label: 'Principal' },
@@ -85,30 +92,9 @@ function App() {
                 </button>
               );
             })}
-
-            {/* Botão extra pra acessar o Upsell temporariamente */}
-            <button
-              onClick={() => setActiveTab('upsell')}
-              className={`relative flex flex-col md:flex-row items-center justify-center gap-1.5 md:gap-2 px-5 py-3 rounded-xl transition-all duration-300 text-zinc-500 hover:text-white hover:bg-zinc-900/50`}
-            >
-              🔥 <span className="text-xs md:text-sm font-semibold">PRO</span>
-            </button>
           </div>
         </div>
       </nav>
-
-      {/* Exibe UpsellPage fora das abas principais */}
-      {activeTab === 'upsell' && (
-        <div className="fixed inset-0 bg-black z-50 overflow-y-auto">
-          <UpsellPage />
-          <button
-            onClick={() => setActiveTab('main')}
-            className="fixed top-4 right-4 bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg"
-          >
-            ✖ Voltar
-          </button>
-        </div>
-      )}
     </div>
   );
 }
