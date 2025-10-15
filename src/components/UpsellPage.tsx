@@ -1,49 +1,40 @@
-import { motion } from "framer-motion";
+// src/components/UpsellPage.tsx
 import { CheckCircle, Lock, Shield, Flame } from "lucide-react";
+import React from "react";
 
 export default function UpsellPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-white overflow-hidden">
       {/* HERO */}
       <section className="relative py-20 px-6 text-center max-w-5xl mx-auto">
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-red-600 to-red-400 bg-clip-text text-transparent"
-        >
+        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-red-600 to-red-400 bg-clip-text text-transparent transition-transform">
           ⚠️ Última Chance de Desbloquear o Método PRO
-        </motion.h1>
+        </h1>
 
         <p className="text-gray-400 text-lg md:text-xl mb-8">
           90% dos alunos que ativam o modo PRO recebem respostas 3x mais rápidas
           e marcam encontros em até 48h.
         </p>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.97 }}
-          className="px-10 py-5 bg-gradient-to-r from-red-700 to-red-500 rounded-xl font-bold text-lg shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-[0_0_40px_rgba(255,0,0,0.8)] transition-all"
+        <button
+          className="px-10 py-5 bg-gradient-to-r from-red-700 to-red-500 rounded-xl font-bold text-lg shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-[0_0_40px_rgba(255,0,0,0.8)] transition-transform"
         >
           🔥 QUERO DESBLOQUEAR AGORA
-        </motion.button>
+        </button>
 
         <p className="mt-4 text-sm text-gray-500">Oferta válida por tempo limitado.</p>
       </section>
 
       {/* PROVA SOCIAL */}
       <section className="py-16 bg-zinc-900/40 border-y border-zinc-800 text-center">
-        <h2 className="text-3xl font-bold mb-10">
-          Resultados Reais de Alunos PRO 💬
-        </h2>
+        <h2 className="text-3xl font-bold mb-10">Resultados Reais de Alunos PRO 💬</h2>
         <div className="flex flex-wrap justify-center gap-6 px-4">
           {Array(3)
             .fill(0)
             .map((_, i) => (
-              <motion.div
+              <div
                 key={i}
-                whileHover={{ scale: 1.05 }}
-                className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-xl p-4 w-80 shadow-lg border border-zinc-700"
+                className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-xl p-4 w-80 shadow-lg border border-zinc-700 hover:scale-[1.02] transition-transform"
               >
                 <div className="text-left space-y-2">
                   <p className="text-gray-400 text-sm">Antes:</p>
@@ -55,7 +46,7 @@ export default function UpsellPage() {
                     “Saí ontem, mas nada se compara a ti 😌”
                   </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
         </div>
       </section>
@@ -81,40 +72,29 @@ export default function UpsellPage() {
               desc: "Quando sumir e o que dizer quando ela reaparece.",
             },
           ].map((b, i) => (
-            <motion.div
+            <div
               key={i}
-              whileHover={{ y: -5 }}
-              className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-2xl p-8 shadow-xl border border-zinc-700"
+              className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-2xl p-8 shadow-xl border border-zinc-700 hover:-translate-y-1 transition-transform"
             >
-              <h3 className="text-2xl font-bold mb-4 text-red-400">
-                {b.title}
-              </h3>
+              <h3 className="text-2xl font-bold mb-4 text-red-400">{b.title}</h3>
               <p className="text-gray-400">{b.desc}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </section>
 
       {/* OFERTA */}
       <section className="py-16 bg-black border-y border-zinc-800 text-center">
-        <h2 className="text-4xl font-bold mb-6 text-red-500">
-          ⚠️ Oferta Exclusiva
-        </h2>
-        <p className="text-gray-400 text-lg mb-6">
-          Só disponível nesta página.
-        </p>
+        <h2 className="text-4xl font-bold mb-6 text-red-500">⚠️ Oferta Exclusiva</h2>
+        <p className="text-gray-400 text-lg mb-6">Só disponível nesta página.</p>
 
         <div className="text-2xl text-gray-500 line-through mb-2">R$ 297,00</div>
         <div className="text-6xl font-extrabold text-white mb-4">R$ 47,00</div>
         <p className="text-gray-400 mb-8">Ou 6x de R$ 8,97</p>
 
-        <motion.button
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-12 py-5 bg-gradient-to-r from-red-700 to-red-500 rounded-xl font-bold text-lg shadow-[0_0_25px_rgba(255,0,0,0.6)] hover:shadow-[0_0_40px_rgba(255,0,0,0.8)] transition-all"
-        >
+        <button className="px-12 py-5 bg-gradient-to-r from-red-700 to-red-500 rounded-xl font-bold text-lg shadow-[0_0_25px_rgba(255,0,0,0.6)] hover:shadow-[0_0_40px_rgba(255,0,0,0.8)] transition-transform">
           🔥 QUERO SER ALUNO PRO
-        </motion.button>
+        </button>
       </section>
 
       {/* GARANTIA */}
