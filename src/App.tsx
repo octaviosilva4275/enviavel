@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Home, Play, BookText, Settings } from 'lucide-react';
 import MainTab from './components/MainTab';
 import ContinueWatchingTab from './components/ContinueWatchingTab';
+import UpsellPage from "./components/UpsellPage";
 import MoreContentTab from './components/MoreContentTab';
 import SettingsTab from './components/SettingsTab';
 import { getSettings } from './utils/storage';
@@ -30,6 +31,10 @@ function App() {
   ];
 
   return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/upsell" element={<UpsellPage />} />
+    </Routes>
     <div className="min-h-screen bg-black relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-red-900/5 rounded-full blur-3xl" />
