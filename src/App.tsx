@@ -27,10 +27,10 @@ function App() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-  // 👇 se estiver na URL /upsell, mostra a página Upsell direto
-  if (path === '/oferta') {
-    return <UpsellPage />;
-  }
+const pathname = window.location.pathname.split('?')[0];
+if (pathname === '/oferta' || pathname === '/oferta/') {
+  return <UpsellPage />;
+}
 
   const handleProgressUpdate = () => setRefreshKey(prev => prev + 1);
   const handleProgressReset = () => setRefreshKey(prev => prev + 1);
