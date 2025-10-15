@@ -37,7 +37,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/upsell" element={<UpsellPage />} />
       </Routes>
-    </Router>
+
     <div className="min-h-screen bg-black relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-red-900/5 rounded-full blur-3xl" />
@@ -91,6 +91,7 @@ function App() {
         </div>
       </nav>
     </div>
+  </Router>
   );
 }
 
