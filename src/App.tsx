@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   Home as HomeIcon,
   Play as PlayIcon,
@@ -14,7 +13,7 @@ import SettingsTab from './components/SettingsTab';
 import { getSettings } from './utils/storage';
 import { AppSettings } from './types';
 
-type TabType = 'main' | 'continue' | 'content' | 'settings';
+type TabType = 'main' | 'continue' | 'content' | 'settings' | 'upsell';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('main');
@@ -37,67 +36,80 @@ function App() {
   ];
 
   return (
-    <Router>
-      <Routes>
-        {/* Se quiser renderizar um componente de rota real em "/", substitua <div /> por <MainTab /> ou outro componente */}
-        <Route path="/" element={<div />} />
-        <Route path="/upsell" element={<UpsellPage />} />
-      </Routes>
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
+      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-red-900/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-red-950/5 rounded-full blur-3xl" />
 
-      <div className="min-h-screen bg-black relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-red-900/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-red-950/5 rounded-full blur-3xl" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 py-8 pb-28 md:pb-8">
+        <div className="mb-8">
+          {activeTab === 'main' && <MainTab onProgressUpdate={handleProgressUpdate} />}
+          {activeTab === 'continue' && <ContinueWatchingTab key={refreshKey} />}
+          {activeTab === 'content' && <MoreContentTab />}
+          {activeTab === 'settings' && (
+            <SettingsTab
+              onSettingsChange={setSettings}
+              onProgressReset={handleProgressReset}
+            />
+          )}
+        </div>
+      </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 py-8 pb-28 md:pb-8">
-          <div className="mb-8">
-            {activeTab === 'main' && <MainTab onProgressUpdate={handleProgressUpdate} />}
-            {activeTab === 'continue' && <ContinueWatchingTab key={refreshKey} />}
-            {activeTab === 'content' && <MoreContentTab />}
-            {activeTab === 'settings' && (
-              <SettingsTab
-                onSettingsChange={setSettings}
-                onProgressReset={handleProgressReset}
-              />
-            )}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/80 border-t border-zinc-900/50 md:relative md:border-t-0 md:bg-transparent md:backdrop-blur-none md:mt-12">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="grid grid-cols-4 gap-2 py-3 md:flex md:justify-center md:gap-3">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`relative flex flex-col md:flex-row items-center justify-center gap-1.5 md:gap-2 px-5 py-3 rounded-xl transition-all duration-300 ${
+                    isActive
+                      ? 'bg-gradient-to-br from-red-600 to-red-700 text-white shadow-lg shadow-red-600/30'
+                      : 'text-zinc-500 hover:text-white hover:bg-zinc-900/50'
+                  }`}
+                >
+                  {isActive && (
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-red-600 to-red-700 opacity-20 blur-lg" />
+                  )}
+                  <Icon className={`w-5 h-5 transition-transform ${
+                    isActive ? 'scale-110' : ''
+                  }`} />
+                  <span className={`text-xs md:text-sm font-semibold transition-all ${
+                    isActive ? 'scale-105' : ''
+                  }`}>
+                    {tab.label}
+                  </span>
+                </button>
+              );
+            })}
+
+            {/* Botão extra pra acessar o Upsell temporariamente */}
+            <button
+              onClick={() => setActiveTab('upsell')}
+              className={`relative flex flex-col md:flex-row items-center justify-center gap-1.5 md:gap-2 px-5 py-3 rounded-xl transition-all duration-300 text-zinc-500 hover:text-white hover:bg-zinc-900/50`}
+            >
+              🔥 <span className="text-xs md:text-sm font-semibold">PRO</span>
+            </button>
           </div>
         </div>
+      </nav>
 
-        <nav className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/80 border-t border-zinc-900/50 md:relative md:border-t-0 md:bg-transparent md:backdrop-blur-none md:mt-12">
-          <div className="max-w-4xl mx-auto px-4">
-            <div className="grid grid-cols-4 gap-2 py-3 md:flex md:justify-center md:gap-3">
-              {tabs.map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`relative flex flex-col md:flex-row items-center justify-center gap-1.5 md:gap-2 px-5 py-3 rounded-xl transition-all duration-300 ${
-                      isActive
-                        ? 'bg-gradient-to-br from-red-600 to-red-700 text-white shadow-lg shadow-red-600/30'
-                        : 'text-zinc-500 hover:text-white hover:bg-zinc-900/50'
-                    }`}
-                  >
-                    {isActive && (
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-red-600 to-red-700 opacity-20 blur-lg" />
-                    )}
-                    <Icon className={`w-5 h-5 transition-transform ${
-                      isActive ? 'scale-110' : ''
-                    }`} />
-                    <span className={`text-xs md:text-sm font-semibold transition-all ${
-                      isActive ? 'scale-105' : ''
-                    }`}>
-                      {tab.label}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </nav>
-      </div>
-    </Router>
+      {/* Exibe UpsellPage fora das abas principais */}
+      {activeTab === 'upsell' && (
+        <div className="fixed inset-0 bg-black z-50 overflow-y-auto">
+          <UpsellPage />
+          <button
+            onClick={() => setActiveTab('main')}
+            className="fixed top-4 right-4 bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg"
+          >
+            ✖ Voltar
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 
