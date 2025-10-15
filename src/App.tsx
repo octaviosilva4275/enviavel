@@ -28,7 +28,7 @@ function App() {
   }, []);
 
   // 👇 se estiver na URL /upsell, mostra a página Upsell direto
-  if (path === '/upsell') {
+  if (path === '/oferta') {
     return <UpsellPage />;
   }
 
