@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home, Play, BookText, Settings } from 'lucide-react';
 import MainTab from './components/MainTab';
 import ContinueWatchingTab from './components/ContinueWatchingTab';
@@ -33,7 +34,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/upsell" element={<UpsellPage />} />
+      <Route path="/oferta" element={<UpsellPage />} />
     </Routes>
     <div className="min-h-screen bg-black relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
