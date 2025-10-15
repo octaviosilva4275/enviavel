@@ -27,10 +27,12 @@ function App() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-const pathname = window.location.pathname.split('?')[0];
-if (pathname === '/oferta' || pathname === '/oferta/') {
-  return <UpsellPage />;
-}
+  // normalize path (ignora query string e trailing slash)
+  const pathname = path.split('?')[0].replace(/\/+$/, '') || '/';
+
+  if (pathname === '/oferta') {
+    return <UpsellPage />;
+  }
 
   const handleProgressUpdate = () => setRefreshKey(prev => prev + 1);
   const handleProgressReset = () => setRefreshKey(prev => prev + 1);
