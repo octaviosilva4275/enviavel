@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Play } from 'lucide-react';
+import { Play, Maximize2, Minimize2 } from 'lucide-react';
 import { saveWatchProgress, getVideoThumbnail } from '../utils/storage';
 import { Video } from '../types';
 
@@ -12,6 +12,7 @@ interface VideoPlayerProps {
 export default function VideoPlayer({ video, moduleTitle, onProgressUpdate }: VideoPlayerProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const progressInterval = useRef<number>();
 
   useEffect(() => {
@@ -70,11 +71,30 @@ export default function VideoPlayer({ video, moduleTitle, onProgressUpdate }: Vi
     setIsPlaying(true);
   };
 
+  const toggleFullscreen = () => {
+    if (!iframeRef.current) return;
+
+    if (!document.fullscreenElement) {
+      iframeRef.current.requestFullscreen?.();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen?.();
+      setIsFullscreen(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFsChange);
+    return () => document.removeEventListener('fullscreenchange', handleFsChange);
+  }, []);
+
   return (
     <div className="relative w-full aspect-video bg-gradient-to-br from-zinc-950 to-black rounded-2xl overflow-hidden group shadow-2xl border border-zinc-900">
       <div className="absolute inset-0 bg-grid-pattern opacity-5" />
 
-      {/* Overlay de Play */}
       {!isPlaying && (
         <div
           className="absolute inset-0 z-10 flex items-center justify-center cursor-pointer bg-gradient-to-br from-black/70 via-black/50 to-black/70 group-hover:from-black/40 group-hover:via-black/30 group-hover:to-black/40 transition-all duration-500"
@@ -89,7 +109,6 @@ export default function VideoPlayer({ video, moduleTitle, onProgressUpdate }: Vi
         </div>
       )}
 
-      {/* Player */}
       <iframe
         ref={iframeRef}
         src={video.embedUrl}
@@ -98,6 +117,20 @@ export default function VideoPlayer({ video, moduleTitle, onProgressUpdate }: Vi
         allowFullScreen
         title={video.title}
       />
+
+      {/* Botão de Fullscreen */}
+      {isPlaying && (
+        <button
+          onClick={toggleFullscreen}
+          className="absolute top-3 right-3 z-20 p-2 bg-black/50 hover:bg-red-900/70 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100"
+        >
+          {isFullscreen ? (
+            <Minimize2 className="w-5 h-5 text-white" />
+          ) : (
+            <Maximize2 className="w-5 h-5 text-white" />
+          )}
+        </button>
+      )}
     </div>
   );
 }
