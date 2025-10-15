@@ -29,8 +29,8 @@ export default function VideoPlayer({ video, moduleTitle, onProgressUpdate }: Vi
             stopProgressTracking();
           }
         }
-      } catch (e) {
-        // Ignore parsing errors
+      } catch {
+        // ignora erros de parse
       }
     };
 
@@ -57,18 +57,24 @@ export default function VideoPlayer({ video, moduleTitle, onProgressUpdate }: Vi
   };
 
   const stopProgressTracking = () => {
-    if (progressInterval.current) {
-      clearInterval(progressInterval.current);
-    }
+    if (progressInterval.current) clearInterval(progressInterval.current);
   };
 
   const handlePlay = () => {
+    if (iframeRef.current) {
+      const src = video.embedUrl.includes('autoplay=1')
+        ? video.embedUrl
+        : `${video.embedUrl}${video.embedUrl.includes('?') ? '&' : '?'}autoplay=1`;
+      iframeRef.current.src = src;
+    }
     setIsPlaying(true);
   };
 
   return (
     <div className="relative w-full aspect-video bg-gradient-to-br from-zinc-950 to-black rounded-2xl overflow-hidden group shadow-2xl border border-zinc-900">
       <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+
+      {/* Overlay de Play */}
       {!isPlaying && (
         <div
           className="absolute inset-0 z-10 flex items-center justify-center cursor-pointer bg-gradient-to-br from-black/70 via-black/50 to-black/70 group-hover:from-black/40 group-hover:via-black/30 group-hover:to-black/40 transition-all duration-500"
@@ -82,6 +88,8 @@ export default function VideoPlayer({ video, moduleTitle, onProgressUpdate }: Vi
           </div>
         </div>
       )}
+
+      {/* Player */}
       <iframe
         ref={iframeRef}
         src={video.embedUrl}
