@@ -28,10 +28,6 @@ function App() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-const pathname = window.location.pathname.split('?')[0];
-if (pathname === '/oferta' || pathname === '/oferta/') {
-  return <UpsellPage />;
-}
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = window.location.pathname.split('?')[0];
