@@ -33,9 +33,10 @@ if (pathname === '/oferta' || pathname === '/oferta/') {
   return <UpsellPage />;
 }
 
-if (!isLoggedIn) {
-  return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
-}
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const pathname = window.location.pathname.split('?')[0];
+  if (pathname === '/oferta') return <UpsellPage />;
+  if (!isLoggedIn) return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
 
   const handleProgressUpdate = () => setRefreshKey(prev => prev + 1);
   const handleProgressReset = () => setRefreshKey(prev => prev + 1);
