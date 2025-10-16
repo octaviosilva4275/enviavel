@@ -21,8 +21,9 @@ function App() {
   const [settings, setSettings] = useState<AppSettings>(getSettings());
   const [refreshKey, setRefreshKey] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // estado de login
-  const [path, setPath] = useState(window.location.pathname);
 
+  // Detecta mudanças na URL
+  const [path, setPath] = useState(window.location.pathname);
   useEffect(() => {
     const onPopState = () => setPath(window.location.pathname);
     window.addEventListener('popstate', onPopState);
@@ -30,6 +31,8 @@ function App() {
   }, []);
 
   const pathname = window.location.pathname.split('?')[0];
+
+  // Rotas
   if (pathname === '/oferta') return <UpsellPage />;
   if (!isLoggedIn) return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
 
@@ -43,27 +46,26 @@ function App() {
     { id: 'settings' as TabType, icon: SettingsIcon, label: 'Configurações' },
   ];
 
-return (
+  return (
     <div className="min-h-screen bg-black relative overflow-hidden">
-      {/* Background decorativo */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-red-900/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-red-950/5 rounded-full blur-3xl" />
 
-      {/* Conteúdo principal */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-8 pb-28 md:pb-8">
-        {activeTab === 'main' && <MainTab onProgressUpdate={handleProgressUpdate} />}
-        {activeTab === 'continue' && <ContinueWatchingTab key={refreshKey} />}
-        {activeTab === 'content' && <MoreContentTab />}
-        {activeTab === 'settings' && (
-          <SettingsTab
-            onSettingsChange={setSettings}
-            onProgressReset={handleProgressReset}
-          />
-        )}
+        <div className="mb-8">
+          {activeTab === 'main' && <MainTab onProgressUpdate={handleProgressUpdate} />}
+          {activeTab === 'continue' && <ContinueWatchingTab key={refreshKey} />}
+          {activeTab === 'content' && <MoreContentTab />}
+          {activeTab === 'settings' && (
+            <SettingsTab
+              onSettingsChange={setSettings}
+              onProgressReset={handleProgressReset}
+            />
+          )}
+        </div>
       </div>
 
-      {/* Navegação inferior */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/80 border-t border-zinc-900/50 md:relative md:border-t-0 md:bg-transparent md:backdrop-blur-none md:mt-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="grid grid-cols-4 gap-2 py-3 md:flex md:justify-center md:gap-3">
