@@ -9,6 +9,7 @@ import MainTab from './components/MainTab';
 import ContinueWatchingTab from './components/ContinueWatchingTab';
 import UpsellPage from "./components/UpsellPage";
 import MoreContentTab from './components/MoreContentTab';
+import LoginPage from "./components/LoginPage";
 import SettingsTab from './components/SettingsTab';
 import { getSettings } from './utils/storage';
 import { AppSettings } from './types';
@@ -31,6 +32,10 @@ const pathname = window.location.pathname.split('?')[0];
 if (pathname === '/oferta' || pathname === '/oferta/') {
   return <UpsellPage />;
 }
+
+  if (pathname === "/login") {
+    return <LoginPage />;
+  }
 
   const handleProgressUpdate = () => setRefreshKey(prev => prev + 1);
   const handleProgressReset = () => setRefreshKey(prev => prev + 1);
