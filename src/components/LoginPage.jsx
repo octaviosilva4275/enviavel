@@ -1,4 +1,3 @@
-// src/components/LoginPage.jsx
 import { useState } from "react";
 
 export default function LoginPage({ onLogin }) {
@@ -19,7 +18,7 @@ export default function LoginPage({ onLogin }) {
 
     if (email.toLowerCase() === VALID_EMAIL && password === VALID_PASSWORD) {
       setMessage("Acesso liberado 🔓");
-      onLogin(); // <-- avisa o App que o login foi realizado
+      onLogin(); // <-- redireciona para App
     } else {
       setMessage("E-mail ou senha incorretos.");
     }
@@ -66,7 +65,7 @@ export default function LoginPage({ onLogin }) {
           </button>
 
           {message && (
-            <div className={`mt-2 text-sm font-semibold transition-all text-red-400`}>
+            <div className={`mt-2 text-sm font-semibold transition-all ${message.includes("liberado") ? "text-green-400" : "text-red-400"}`}>
               {message}
             </div>
           )}
