@@ -61,15 +61,17 @@ export default function VideoPlayer({ video, moduleTitle, onProgressUpdate }: Vi
     if (progressInterval.current) clearInterval(progressInterval.current);
   };
 
-  const handlePlay = () => {
-    if (iframeRef.current) {
-      const src = video.embedUrl.includes('autoplay=1')
-        ? video.embedUrl
-        : `${video.embedUrl}${video.embedUrl.includes('?') ? '&' : '?'}autoplay=1`;
-      iframeRef.current.src = src;
-    }
-    setIsPlaying(true);
-  };
+const handlePlay = () => {
+  if (iframeRef.current) {
+    const cleanUrl = `${video.embedUrl}${
+      video.embedUrl.includes('?') ? '&' : '?'
+    }autoplay=1&modestbranding=1&rel=0&showinfo=0&controls=1`;
+
+    iframeRef.current.src = cleanUrl; // apenas essa linha define o src final
+  }
+  setIsPlaying(true);
+};
+
 
   const toggleFullscreen = () => {
     if (!iframeRef.current) return;
